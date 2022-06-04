@@ -6,8 +6,8 @@ public class SpawnObject : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> objectsToSpawn;  // a list holding the objects to spawn
-    [SerializeField]
-    private List<GameObject> spawnedObjects;  // a list holding the spawned objects
+    [HideInInspector]
+    public List<GameObject> spawnedObjects;  // a list holding the spawned objects
 
     private int i = 0; // an index referring to the position on the list (should there be more objects: updated in the function)
 

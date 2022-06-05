@@ -5,8 +5,13 @@ using UnityEngine;
 public class SelectObject : MonoBehaviour
 {
     [SerializeField]
-    private Material selectMaterial;
-    
+    private Material selectMaterial;    // the color to which the selected object should be changed to
+    [SerializeField]
+    private Material unSelectMaterial;  // ideally get the material of the selected component from its renderer
+
+    private Transform raycastObject;
+    private Transform selectedObject;
+
     private void Update()
     {
         CheckRayCast();
@@ -14,19 +19,29 @@ public class SelectObject : MonoBehaviour
 
     public void CheckRayCast()
     {
+        if (selectedObject != null)
+        {
+            Renderer selectedObjectRenderer = selectedObject.GetComponent<Renderer>();
+            selectedObjectRenderer.material = unSelectMaterial;
+            selectedObject = null;
+        }
+
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit raycastHit;
 
         if (Physics.Raycast(ray, out raycastHit))
         {
-            Transform selectedObject = raycastHit.transform;
+            raycastObject = raycastHit.transform;
 
-            Renderer selectedObjectRenderer = selectedObject.GetComponent<Renderer>();
+            Renderer raycastObjectRenderer = raycastObject.GetComponent<Renderer>();
 
-            if (selectedObjectRenderer != null)
+            if (raycastObjectRenderer != null)
             {
-                selectedObjectRenderer.material = selectMaterial;
+                raycastObjectRenderer.material = selectMaterial;
             }
+
+            selectedObject = raycastObject;
         }
     }
 }

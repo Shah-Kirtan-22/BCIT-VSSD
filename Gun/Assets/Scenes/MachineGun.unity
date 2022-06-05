@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectMaterial: {fileID: 2100000, guid: 8c7f74493d50ecd458f9734c4e2a253b, type: 2}
+  unSelectMaterial: {fileID: 5561349426305759274, guid: c0483e65293679543811a34a95f18ded, type: 3}
 --- !u!1 &2071868772
 GameObject:
   m_ObjectHideFlags: 0

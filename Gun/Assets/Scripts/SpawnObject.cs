@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnObject : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> objectsToSpawn;  // a list holding the objects to spawn
+    public List<GameObject> objectsToSpawn;  // a list holding the objects to spawn
+    
     [HideInInspector]
     public List<GameObject> spawnedObjects;  // a list holding the spawned objects
 

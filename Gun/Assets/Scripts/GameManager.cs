@@ -7,13 +7,25 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     SpawnObject spawnObject;
-    [SerializeField]
-    Slider zoomSlider;
     public Material wireFrameMaterial;
+    public Dropdown treeUI;
+    
+    [SerializeField]
+    private List<string> machineGun;
+    
+    Transform tempObject;
 
     private void Start()
     {
         spawnObject = GameObject.Find("SpawnLocation").GetComponent<SpawnObject>();
+        tempObject = spawnObject.spawnedObjects[0].transform;
+
+        treeUI = GameObject.Find("UITree").GetComponent<Dropdown>();
+
+        CreateDropdown();
+
+        
+
     }
 
     public void ResetGame()
@@ -35,8 +47,18 @@ public class GameManager : MonoBehaviour
         foreach(Renderer r in tempRenderer)
         {
             r.material = wireFrameMaterial;
-            
         }
+    }
+
+    public void CreateDropdown()
+    {
+        foreach (Transform o in tempObject)
+        {
+            machineGun.Add(o.gameObject.ToString());
+        }
+
+        treeUI.ClearOptions();
+        treeUI.AddOptions(machineGun);
     }
 
 }

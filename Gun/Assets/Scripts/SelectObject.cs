@@ -35,6 +35,7 @@ public class SelectObject : MonoBehaviour
 
         mousePosition.x = Input.mousePosition.x;
         mousePosition.y = Input.mousePosition.y;
+        mousePosition.z = 0f;
 
         CheckRayCast();
 
@@ -64,12 +65,11 @@ public class SelectObject : MonoBehaviour
         if (Physics.Raycast(ray, out raycastHit))
         {
             raycastObject = raycastHit.transform;
-            //hoverText.text = raycastObject.gameObject.name;  
             textPosition();
             
             if(Input.GetMouseButton(0))  // left mouse button held down
             {
-                raycastObject.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 5f));
+                raycastObject.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
             }
             
             Renderer raycastObjectRenderer = raycastObject.GetComponent<Renderer>();
@@ -87,7 +87,7 @@ public class SelectObject : MonoBehaviour
     // The method is responsible for changing the position of the gameobject according to the mouse position in world space
     public void ChangePosition()
     {
-        machineGun.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
+        machineGun.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 5f));
     }
     
     // This method is called when the player presses and holds down right mouse button

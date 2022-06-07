@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectObject : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class SelectObject : MonoBehaviour
     private Transform raycastObject;  // highlight this object on hover
     private Transform selectedObject;  // the selected object on hover
     private Vector3 mousePosition;  // variable to convert and store the mouse position as a 3D vector
+
+    [SerializeField]
+    private Text hoverText;
 
     [SerializeField]
     private GameObject machineGun;  // reference to the gameobject (Ideally if more objects, use the index from spawnobject script)
@@ -60,6 +64,8 @@ public class SelectObject : MonoBehaviour
         if (Physics.Raycast(ray, out raycastHit))
         {
             raycastObject = raycastHit.transform;
+            //hoverText.text = raycastObject.gameObject.name;  
+            textPosition();
             
             if(Input.GetMouseButton(0))  // left mouse button held down
             {
@@ -89,5 +95,11 @@ public class SelectObject : MonoBehaviour
     public void ChangeRotation()
     {
         machineGun.transform.Rotate(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) * rotationSpeed * Time.deltaTime * 360);
+    }
+
+    public void textPosition()
+    {
+        hoverText.text = raycastObject.gameObject.name;
+        //hoverText.transform.position = raycastObject.position + new Vector3(1f,1f,0);        
     }
 }

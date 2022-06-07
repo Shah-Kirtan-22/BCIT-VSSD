@@ -23,9 +23,6 @@ public class GameManager : MonoBehaviour
         treeUI = GameObject.Find("UITree").GetComponent<Dropdown>();
 
         CreateDropdown();
-
-        
-
     }
 
     public void ResetGame()
@@ -52,7 +49,9 @@ public class GameManager : MonoBehaviour
 
     public void CreateDropdown()
     {
-        foreach (Transform o in tempObject)
+        Transform[] grandChildren = tempObject.GetComponentsInChildren<Transform>();
+
+        foreach (Transform o in grandChildren)
         {
             machineGun.Add(o.gameObject.ToString());
         }

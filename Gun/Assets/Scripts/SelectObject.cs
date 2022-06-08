@@ -100,6 +100,6 @@ public class SelectObject : MonoBehaviour
     public void textPosition()
     {
         hoverText.text = raycastObject.gameObject.name;
-        //hoverText.transform.position = raycastObject.position + new Vector3(1f,1f,0);        
+        hoverText.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x + 200f, mousePosition.y - 200f, 25f));
     }
 }

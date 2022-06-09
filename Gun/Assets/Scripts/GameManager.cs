@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    SpawnObject spawnObject;
-    public Material wireFrameMaterial;
-    public Dropdown treeUI;
+    SpawnObject spawnObject;  
+    public Material wireFrameMaterial;  // used for x-ray 
+    public Material transparentMaterial;  // used for transparency 
+    public Dropdown treeUI;  
     
     [SerializeField]
     private List<string> machineGun;
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
         treeUI = GameObject.Find("UITree").GetComponent<Dropdown>();
 
         CreateDropdown();
+
+        treeUI.onValueChanged.AddListener(delegate { OnDropDownValueChange();} );
     }
 
     public void ResetGame()
@@ -39,11 +42,18 @@ public class GameManager : MonoBehaviour
 
     public void WireFrame()
     {
-        GL.wireframe = true;
         Renderer[] tempRenderer = GameObject.FindObjectsOfType<Renderer>();
         foreach(Renderer r in tempRenderer)
         {
             r.material = wireFrameMaterial;
+        }
+    }   
+    public void Transparent()
+    {
+        Renderer[] tempRenderer = GameObject.FindObjectsOfType<Renderer>();
+        foreach(Renderer r in tempRenderer)
+        {
+            r.material = transparentMaterial;
         }
     }
 
@@ -60,4 +70,11 @@ public class GameManager : MonoBehaviour
         treeUI.AddOptions(machineGun);
     }
 
+    public void OnDropDownValueChange()
+    {
+        string tempText = treeUI.options[treeUI.value].text.ToString();
+        Debug.Log(tempText);
+        //Renderer tempRenderer = GameObject.Find(treeUI.options[treeUI.value].text).GetComponent<Renderer>();
+        //tempRenderer.material.color = Color.red;
+    }
 }

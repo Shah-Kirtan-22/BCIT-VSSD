@@ -26,19 +26,21 @@ public class SelectObject : MonoBehaviour
 
     private void Start()
     {
-        machineGun = GameObject.FindGameObjectWithTag("MachineGun");
+        machineGun = GameObject.FindGameObjectWithTag("MachineGun");  // get the gameobject machinegun for future use
     }
 
     private void Update()
     {
         // store the current mouse position in the vector3 variable
-
         mousePosition.x = Input.mousePosition.x;
         mousePosition.y = Input.mousePosition.y;
-        mousePosition.z = 0f;
 
         CheckRayCast();
 
+        if(Input.GetMouseButton(0))  // left mouse button held down
+        {
+            OnMouseHold(); 
+        }
         if (Input.GetMouseButton(2))  // middle mouse button held down
         {
             ChangePosition();
@@ -51,43 +53,51 @@ public class SelectObject : MonoBehaviour
 
     public void CheckRayCast()
     {
-        if (selectedObject != null)
+        if (selectedObject != null)  // check if there is a raycast: if there is, change its material
         {
             Renderer selectedObjectRenderer = selectedObject.GetComponent<Renderer>();
-            selectedObjectRenderer.material = unSelectMaterial;
+            selectedObjectRenderer.material = unSelectMaterial;  // change the material back to original
             selectedObject = null;
         }
 
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // send a ray from the mouse position onto the screen
         RaycastHit raycastHit;
 
-        if (Physics.Raycast(ray, out raycastHit))
+        if (Physics.Raycast(ray, out raycastHit))  // will activate as soon as the ray hits something (with a collider)
         {
-            raycastObject = raycastHit.transform;
+            raycastObject = raycastHit.transform;  // store the raycast position into another object(transform)
+            
             textPosition();
-            
-            if(Input.GetMouseButton(0))  // left mouse button held down
-            {
-                raycastObject.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10f));
-            }
-            
+
             Renderer raycastObjectRenderer = raycastObject.GetComponent<Renderer>();
 
             if (raycastObjectRenderer != null)
             {
-                raycastObjectRenderer.material = selectMaterial;
+                raycastObjectRenderer.material = selectMaterial;  // set the material when the raycast hits a gameobject to red
             }
 
-            selectedObject = raycastObject;
+            selectedObject = raycastObject;  // simply copy the material and object properties for deselection
         }
+    }
+
+    // This method is called when the player presses and holds down left mouse button 
+    // The method is responsible for changing the position of the gameobject according to the mouse position in world space
+    public void OnMouseHold()
+    {
+        // This method uses the same principle as the OnMouseDrag method
+        // the z-postion offset is in accordance to the distance from camera to the gameobject
+        // if multiple objects - Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, raycastObject.position.z))
+        raycastObject.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 5f));
     }
 
     // This method is called when the player presses and holds down middle mouse button (scroller)
     // The method is responsible for changing the position of the gameobject according to the mouse position in world space
     public void ChangePosition()
     {
-        machineGun.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 5f));
+        // change the position of the gameobject according to the position of the mouse
+        // the offset added to the z-axis is to counteract the camera's z position (at -5)
+        machineGun.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 5f)); 
     }
     
     // This method is called when the player presses and holds down right mouse button
@@ -97,6 +107,8 @@ public class SelectObject : MonoBehaviour
         machineGun.transform.Rotate(new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) * rotationSpeed * Time.deltaTime * 360);
     }
 
+    // This method is called when the player hovers over certain parts of the gameobject
+    // The method is responsible for changing the position of the text box as well as thet text itself
     public void textPosition()
     {
         hoverText.text = raycastObject.gameObject.name;

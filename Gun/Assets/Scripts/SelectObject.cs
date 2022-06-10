@@ -16,6 +16,8 @@ public class SelectObject : MonoBehaviour
 
     [SerializeField]
     private Text hoverText;
+    [SerializeField]
+    private Text staticText;
 
     [SerializeField]
     private GameObject machineGun;  // reference to the gameobject (Ideally if more objects, use the index from spawnobject script)
@@ -59,7 +61,6 @@ public class SelectObject : MonoBehaviour
             selectedObjectRenderer.material = unSelectMaterial;  // change the material back to original
             selectedObject = null;
         }
-
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // send a ray from the mouse position onto the screen
         RaycastHit raycastHit;
@@ -113,5 +114,6 @@ public class SelectObject : MonoBehaviour
     {
         hoverText.text = raycastObject.gameObject.name;
         hoverText.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x + 100f, mousePosition.y - 100f, 4f));
+        staticText.text = hoverText.text;  // simply copy the text for the static text
     }
 }

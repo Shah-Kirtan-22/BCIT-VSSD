@@ -19,25 +19,26 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         spawnObject = GameObject.Find("SpawnLocation").GetComponent<SpawnObject>();
-        tempObject = spawnObject.spawnedObjects[0].transform;
+        tempObject = spawnObject.spawnedObjects[0].transform;  // store the spawned object's transform into a temporary transform variable
 
         treeUI = GameObject.Find("UITree").GetComponent<Dropdown>();
 
         CreateDropdown();
 
-        treeUI.onValueChanged.AddListener(delegate { OnDropDownValueChange();} );
+        treeUI.onValueChanged.AddListener(delegate { OnDropDownValueChange();} );  // fire an event everytime the value changes
     }
 
-    public void ResetGame()
+    public void ResetGame()  
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0;   // stop the time for the application
         RestartGame();
     }
 
     public void RestartGame()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;  // set the time to normal 
+        // Since there is only 1 scene, the following method is used (more than 1 scene: use a string)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
     }
 
     public void WireFrame()
@@ -45,18 +46,21 @@ public class GameManager : MonoBehaviour
         Renderer[] tempRenderer = GameObject.FindObjectsOfType<Renderer>();
         foreach(Renderer r in tempRenderer)
         {
-            r.material = wireFrameMaterial;
+            r.material = wireFrameMaterial;  // sets the material to wireframe
         }
     }   
+
     public void Transparent()
     {
         Renderer[] tempRenderer = GameObject.FindObjectsOfType<Renderer>();
         foreach(Renderer r in tempRenderer)
         {
-            r.material = transparentMaterial;
+            r.material = transparentMaterial;  // sets the material to transparent
         }
     }
 
+    // In this method, get all of the children of the spawned gameobject and store it in an array
+    // next, iterate through the array and add the name to the list
     public void CreateDropdown()
     {
         Transform[] grandChildren = tempObject.GetComponentsInChildren<Transform>();
@@ -66,10 +70,12 @@ public class GameManager : MonoBehaviour
             machineGun.Add(o.gameObject.ToString());
         }
 
-        treeUI.ClearOptions();
-        treeUI.AddOptions(machineGun);
+        treeUI.ClearOptions();  // clear the options everytime the function is called
+        treeUI.AddOptions(machineGun);  // add the list of string to the dropdown
     }
 
+    // This method is responsible for displaying the name of the selected option in the console
+    // In future, the method can be used to call CheckRaycast method for highlighting the game object
     public void OnDropDownValueChange()
     {
         string tempText = treeUI.options[treeUI.value].text.ToString();
